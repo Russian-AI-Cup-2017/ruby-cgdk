@@ -30,4 +30,19 @@ class Unit
   def distance_to_unit(unit)
     distance_to(unit.x, unit.y)
   end
+
+  # @param [Float] x
+  # @param [Float] y
+  # @return [Float]
+  def squared_distance_to(x, y)
+    x_range = x - @x
+    y_range = y - @y
+    x_range * x_range + y_range * y_range
+  end
+
+  # @param [Unit] unit
+  # @return [Float]
+  def squared_distance_to_unit(unit)
+    squared_distance_to(unit.x, unit.y)
+  end
 end
