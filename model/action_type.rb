@@ -8,6 +8,7 @@ module ActionType
   DISBAND = 6
   MOVE = 7
   ROTATE = 8
-  SETUP_VEHICLE_PRODUCTION = 9
-  COUNT = 10
+  SCALE = 9
+  SETUP_VEHICLE_PRODUCTION = 10
+  COUNT = 11
 end

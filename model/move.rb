@@ -31,6 +31,9 @@ class Move
   attr_accessor :angle
 
   # @return [Float]
+  attr_accessor :factor
+
+  # @return [Float]
   attr_accessor :max_speed
 
   # @return [Float]
@@ -52,6 +55,7 @@ class Move
     @x = 0.0
     @y = 0.0
     @angle = 0.0
+    @factor = 0.0
     @max_speed = 0.0
     @max_angular_speed = 0.0
     @vehicle_type = nil

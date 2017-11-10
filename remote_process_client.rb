@@ -39,7 +39,7 @@ class RemoteProcessClient
 
   def write_protocol_version_message
     write_enum(MessageType::PROTOCOL_VERSION)
-    write_int(1)
+    write_int(2)
   end
 
   def read_team_size_message
@@ -259,6 +259,7 @@ class RemoteProcessClient
       write_double(move.x)
       write_double(move.y)
       write_double(move.angle)
+      write_double(move.factor)
       write_double(move.max_speed)
       write_double(move.max_angular_speed)
       write_enum(move.vehicle_type)
