@@ -45,6 +45,9 @@ class Move
   # @return [Integer]
   attr_accessor :facility_id
 
+  # @return [Integer]
+  attr_accessor :vehicle_id
+
   def initialize
     @action = nil
     @group = 0
@@ -60,5 +63,6 @@ class Move
     @max_angular_speed = 0.0
     @vehicle_type = nil
     @facility_id = -1
+    @vehicle_id = -1
   end
 end

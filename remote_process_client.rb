@@ -39,7 +39,7 @@ class RemoteProcessClient
 
   def write_protocol_version_message
     write_enum(MessageType::PROTOCOL_VERSION)
-    write_int(2)
+    write_int(3)
   end
 
   def read_team_size_message
@@ -125,7 +125,7 @@ class RemoteProcessClient
               read_double, read_double, read_int, read_double, read_double, read_double, read_double, read_int,
               read_int, read_int, read_int, read_int, read_int, read_int, read_double, read_double, read_double,
               read_double, read_int, read_int, read_int, read_int, read_int, read_int, read_double, read_double,
-              read_double, read_double)
+              read_double, read_double, read_int, read_int, read_double, read_double, read_int)
   end
 
   def write_game(game)
@@ -223,6 +223,11 @@ class RemoteProcessClient
       write_double(game.facility_capture_points_per_vehicle_per_tick)
       write_double(game.facility_width)
       write_double(game.facility_height)
+      write_int(game.base_tactical_nuclear_strike_cooldown)
+      write_int(game.tactical_nuclear_strike_cooldown_decrease_per_control_center)
+      write_double(game.max_tactical_nuclear_strike_damage)
+      write_double(game.tactical_nuclear_strike_radius)
+      write_int(game.tactical_nuclear_strike_delay)
     end
   end
 
@@ -264,6 +269,7 @@ class RemoteProcessClient
       write_double(move.max_angular_speed)
       write_enum(move.vehicle_type)
       write_long(move.facility_id)
+      write_long(move.vehicle_id)
     end
   end
 
@@ -281,7 +287,8 @@ class RemoteProcessClient
     return nil if flag == 0
     return @previous_player_by_id[read_long] if flag == 127
 
-    player = Player::new(read_long, read_boolean, read_boolean, read_int, read_int)
+    player = Player::new(read_long, read_boolean, read_boolean, read_int, read_int, read_int, read_long, read_int, read_double,
+                         read_double)
     @previous_player_by_id[player.id] = player
   end
 
@@ -296,6 +303,11 @@ class RemoteProcessClient
       write_boolean(player.strategy_crashed)
       write_int(player.score)
       write_int(player.remaining_action_cooldown_ticks)
+      write_int(player.remaining_nuclear_strike_cooldown_ticks)
+      write_long(player.next_nuclear_strike_vehicle_id)
+      write_int(player.next_nuclear_strike_tick_index)
+      write_double(player.next_nuclear_strike_x)
+      write_double(player.next_nuclear_strike_y)
     end
   end
 

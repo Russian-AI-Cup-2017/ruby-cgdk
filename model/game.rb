@@ -267,6 +267,21 @@ class Game
   # @return [Float]
   attr_reader :facility_height
 
+  # @return [Integer]
+  attr_reader :base_tactical_nuclear_strike_cooldown
+
+  # @return [Integer]
+  attr_reader :tactical_nuclear_strike_cooldown_decrease_per_control_center
+
+  # @return [Float]
+  attr_reader :max_tactical_nuclear_strike_damage
+
+  # @return [Float]
+  attr_reader :tactical_nuclear_strike_radius
+
+  # @return [Integer]
+  attr_reader :tactical_nuclear_strike_delay
+
   # @param [Integer] random_seed
   # @param [Integer] tick_count
   # @param [Float] world_width
@@ -356,6 +371,11 @@ class Game
   # @param [Float] facility_capture_points_per_vehicle_per_tick
   # @param [Float] facility_width
   # @param [Float] facility_height
+  # @param [Integer] base_tactical_nuclear_strike_cooldown
+  # @param [Integer] tactical_nuclear_strike_cooldown_decrease_per_control_center
+  # @param [Float] max_tactical_nuclear_strike_damage
+  # @param [Float] tactical_nuclear_strike_radius
+  # @param [Integer] tactical_nuclear_strike_delay
   def initialize(random_seed, tick_count, world_width, world_height, fog_of_war_enabled, victory_score,
                  facility_capture_score, vehicle_elimination_score, action_detection_interval, base_action_count,
                  additional_action_count_per_control_center, max_unit_group, terrain_weather_map_column_count,
@@ -379,7 +399,9 @@ class Game
                  fighter_ground_attack_range, fighter_aerial_attack_range, fighter_ground_damage, fighter_aerial_damage,
                  fighter_ground_defence, fighter_aerial_defence, fighter_attack_cooldown_ticks, fighter_production_cost,
                  max_facility_capture_points, facility_capture_points_per_vehicle_per_tick, facility_width,
-                 facility_height)
+                 facility_height, base_tactical_nuclear_strike_cooldown,
+                 tactical_nuclear_strike_cooldown_decrease_per_control_center, max_tactical_nuclear_strike_damage,
+                 tactical_nuclear_strike_radius, tactical_nuclear_strike_delay)
     @random_seed = random_seed
     @tick_count = tick_count
     @world_width = world_width
@@ -469,5 +491,10 @@ class Game
     @facility_capture_points_per_vehicle_per_tick = facility_capture_points_per_vehicle_per_tick
     @facility_width = facility_width
     @facility_height = facility_height
+    @base_tactical_nuclear_strike_cooldown = base_tactical_nuclear_strike_cooldown
+    @tactical_nuclear_strike_cooldown_decrease_per_control_center = tactical_nuclear_strike_cooldown_decrease_per_control_center
+    @max_tactical_nuclear_strike_damage = max_tactical_nuclear_strike_damage
+    @tactical_nuclear_strike_radius = tactical_nuclear_strike_radius
+    @tactical_nuclear_strike_delay = tactical_nuclear_strike_delay
   end
 end
