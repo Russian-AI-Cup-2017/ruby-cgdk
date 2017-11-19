@@ -11,9 +11,9 @@ require './model/world'
 # noinspection RubyTooManyMethodsInspection
 class RemoteProcessClient
   LITTLE_ENDIAN_BYTE_ORDER = true
-
   BYTE_ORDER_FORMAT_STRING = LITTLE_ENDIAN_BYTE_ORDER ? '<' : '>'
 
+  BYTE_FORMAT_STRING = 'c'
   INT_FORMAT_STRING = 'l' + BYTE_ORDER_FORMAT_STRING
   LONG_FORMAT_STRING = 'q' + BYTE_ORDER_FORMAT_STRING
   DOUBLE_FORMAT_STRING = LITTLE_ENDIAN_BYTE_ORDER ? 'E' : 'G'
@@ -115,17 +115,18 @@ class RemoteProcessClient
   def read_game
     return nil unless read_boolean
 
-    Game::new(read_long, read_int, read_double, read_double, read_boolean, read_int, read_int, read_int, read_int,
-              read_int, read_int, read_int, read_int, read_int, read_double, read_double, read_double, read_double,
-              read_double, read_double, read_double, read_double, read_double, read_double, read_double, read_double,
-              read_double, read_double, read_double, read_double, read_double, read_double, read_double, read_int,
-              read_double, read_double, read_double, read_double, read_int, read_int, read_int, read_int, read_int,
-              read_int, read_int, read_double, read_double, read_double, read_double, read_int, read_int, read_int,
-              read_int, read_int, read_int, read_int, read_double, read_double, read_int, read_int, read_int,
-              read_double, read_double, read_int, read_double, read_double, read_double, read_double, read_int,
-              read_int, read_int, read_int, read_int, read_int, read_int, read_double, read_double, read_double,
-              read_double, read_int, read_int, read_int, read_int, read_int, read_int, read_double, read_double,
-              read_double, read_double, read_int, read_int, read_double, read_double, read_int)
+    game = read_bytes(565).unpack('q<l<E2cl9<E19l<E4l7<E4l7<E2l3<E2l<E4l7<E4l6<E4l2<E2l<')
+
+    Game::new(game[0], game[1], game[2], game[3], game[4] != 0, game[5], game[6], game[7], game[8], game[9], game[10],
+              game[11], game[12], game[13], game[14], game[15], game[16], game[17], game[18], game[19], game[20],
+              game[21], game[22], game[23], game[24], game[25], game[26], game[27], game[28], game[29], game[30],
+              game[31], game[32], game[33], game[34], game[35], game[36], game[37], game[38], game[39], game[40],
+              game[41], game[42], game[43], game[44], game[45], game[46], game[47], game[48], game[49], game[50],
+              game[51], game[52], game[53], game[54], game[55], game[56], game[57], game[58], game[59], game[60],
+              game[61], game[62], game[63], game[64], game[65], game[66], game[67], game[68], game[69], game[70],
+              game[71], game[72], game[73], game[74], game[75], game[76], game[77], game[78], game[79], game[80],
+              game[81], game[82], game[83], game[84], game[85], game[86], game[87], game[88], game[89], game[90],
+              game[91], game[92], game[93])
   end
 
   def write_game(game)
@@ -287,8 +288,10 @@ class RemoteProcessClient
     return nil if flag == 0
     return @previous_player_by_id[read_long] if flag == 127
 
-    player = Player::new(read_long, read_boolean, read_boolean, read_int, read_int, read_int, read_long, read_int, read_double,
-                         read_double)
+    player = read_bytes(50).unpack('q<c2l3<q<l<E2')
+
+    player = Player::new(player[0], player[1] != 0, player[2] != 0, player[3], player[4], player[5], player[6],
+                         player[7], player[8], player[9])
     @previous_player_by_id[player.id] = player
   end
 
@@ -367,9 +370,12 @@ class RemoteProcessClient
   def read_vehicle
     return nil unless read_boolean
 
-    Vehicle::new(read_long, read_double, read_double, read_double, read_long, read_int, read_int, read_double,
-                 read_double, read_double, read_double, read_double, read_double, read_double, read_int, read_int,
-                 read_int, read_int, read_int, read_int, read_enum(VehicleType), read_boolean, read_boolean, read_ints)
+    vehicle = read_bytes(128).unpack('q<E3q<l2<E7l6<')
+
+    Vehicle::new(vehicle[0], vehicle[1], vehicle[2], vehicle[3], vehicle[4], vehicle[5], vehicle[6], vehicle[7],
+                 vehicle[8], vehicle[9], vehicle[10], vehicle[11], vehicle[12], vehicle[13], vehicle[14], vehicle[15],
+                 vehicle[16], vehicle[17], vehicle[18], vehicle[19], read_enum(VehicleType), read_boolean, read_boolean,
+                 read_ints)
   end
 
   def write_vehicle(vehicle)
@@ -426,7 +432,10 @@ class RemoteProcessClient
   def read_vehicle_update
     return nil unless read_boolean
 
-    VehicleUpdate::new(read_long, read_double, read_double, read_int, read_int, read_boolean, read_ints)
+    vehicle_update = read_bytes(33).unpack('q<E2l2<c')
+
+    VehicleUpdate::new(vehicle_update[0], vehicle_update[1], vehicle_update[2], vehicle_update[3], vehicle_update[4],
+                       vehicle_update[5] != 0, read_ints)
   end
 
   def write_vehicle_update(vehicle_update)
@@ -466,7 +475,9 @@ class RemoteProcessClient
   def read_world
     return nil unless read_boolean
 
-    World::new(read_int, read_int, read_double, read_double, read_players, read_vehicles, read_vehicle_updates,
+    world = read_bytes(24).unpack('l2<E2')
+
+    World::new(world[0], world[1], world[2], world[3], read_players, read_vehicles, read_vehicle_updates,
                read_terrain_by_cell_x_y, read_weather_by_cell_x_y, read_facilities)
   end
 
@@ -543,7 +554,7 @@ class RemoteProcessClient
   end
 
   def read_enum(enum_class)
-    value = read_bytes(SIGNED_BYTE_SIZE_BYTES).unpack('c')[0]
+    value = read_bytes(SIGNED_BYTE_SIZE_BYTES).unpack(BYTE_FORMAT_STRING)[0]
     value >= 0 && value < enum_class::COUNT ? value : nil
   end
 
@@ -566,7 +577,7 @@ class RemoteProcessClient
   end
 
   def write_enum(value)
-    write_bytes([value.nil? ? -1 : value].pack('c'))
+    write_bytes([value.nil? ? -1 : value].pack(BYTE_FORMAT_STRING))
   end
 
   def write_enums(enums)
@@ -605,7 +616,7 @@ class RemoteProcessClient
   end
 
   def read_signed_byte
-    read_bytes(SIGNED_BYTE_SIZE_BYTES).unpack('c')[0]
+    read_bytes(SIGNED_BYTE_SIZE_BYTES).unpack(BYTE_FORMAT_STRING)[0]
   end
 
   def read_boolean
@@ -613,7 +624,7 @@ class RemoteProcessClient
   end
 
   def write_boolean(value)
-    write_bytes([value ? 1 : 0].pack('c'))
+    write_bytes([value ? 1 : 0].pack(BYTE_FORMAT_STRING))
   end
 
   def read_int
@@ -625,7 +636,7 @@ class RemoteProcessClient
     return nil if count < 0
 
     ints = []
-    count.times { |_| ints.push(read_int) }
+    ints.concat(read_bytes(count * INTEGER_SIZE_BYTES).unpack("l#{count}" + BYTE_ORDER_FORMAT_STRING)) if count > 0
     ints
   end
 
