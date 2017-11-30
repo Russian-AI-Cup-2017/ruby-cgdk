@@ -693,7 +693,7 @@ class RemoteProcessClient
     while byte_array.length < byte_count
       chunk = @socket.recv(byte_count - byte_array.length)
       raise IOError, "Can't read #{byte_count} bytes from input stream." if chunk.length == 0
-      byte_array += chunk
+      byte_array << chunk
     end
 
     byte_array
