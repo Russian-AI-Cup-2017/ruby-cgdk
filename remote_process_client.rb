@@ -18,7 +18,6 @@ class RemoteProcessClient
   LONG_FORMAT_STRING = 'q' + BYTE_ORDER_FORMAT_STRING
   DOUBLE_FORMAT_STRING = LITTLE_ENDIAN_BYTE_ORDER ? 'E' : 'G'
 
-  SIGNED_BYTE_SIZE_BYTES = 1
   INTEGER_SIZE_BYTES = 4
   LONG_SIZE_BYTES = 8
   DOUBLE_SIZE_BYTES = 8
@@ -554,7 +553,7 @@ class RemoteProcessClient
   end
 
   def read_enum(enum_class)
-    value = read_bytes(SIGNED_BYTE_SIZE_BYTES).unpack(BYTE_FORMAT_STRING)[0]
+    value = read_bytes(1).unpack(BYTE_FORMAT_STRING)[0]
     value >= 0 && value < enum_class::COUNT ? value : nil
   end
 
@@ -616,15 +615,15 @@ class RemoteProcessClient
   end
 
   def read_signed_byte
-    read_bytes(SIGNED_BYTE_SIZE_BYTES).unpack(BYTE_FORMAT_STRING)[0]
+    read_bytes(1).unpack(BYTE_FORMAT_STRING)[0]
   end
 
   def read_boolean
-    read_signed_byte != 0
+    read_bytes(1) != "\0"
   end
 
   def write_boolean(value)
-    write_bytes([value ? 1 : 0].pack(BYTE_FORMAT_STRING))
+    write_bytes(value ? "\1" : "\0")
   end
 
   def read_int
@@ -693,7 +692,7 @@ class RemoteProcessClient
     while byte_array.length < byte_count
       chunk = @socket.recv(byte_count - byte_array.length)
       raise IOError, "Can't read #{byte_count} bytes from input stream." if chunk.length == 0
-      byte_array += chunk
+      byte_array << chunk
     end
 
     byte_array
