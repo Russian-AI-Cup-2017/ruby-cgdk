@@ -98,7 +98,7 @@ class RemoteProcessClient
     return @previous_facilities if facility_count < 0
 
     facilities = []
-    facility_count.times { |_| facilities.push(read_facility) }
+    facility_count.times {|_| facilities.push(read_facility)}
     @previous_facilities = facilities
   end
 
@@ -107,7 +107,7 @@ class RemoteProcessClient
       write_int(-1)
     else
       write_int(facilities.length)
-      facilities.each { |facility| write_facility(facility) }
+      facilities.each {|facility| write_facility(facility)}
     end
   end
 
@@ -236,7 +236,7 @@ class RemoteProcessClient
     return nil if game_count < 0
 
     games = []
-    game_count.times { |_| games.push(read_game) }
+    game_count.times {|_| games.push(read_game)}
     games
   end
 
@@ -245,7 +245,7 @@ class RemoteProcessClient
       write_int(-1)
     else
       write_int(games.length)
-      games.each { |game| write_game(game) }
+      games.each {|game| write_game(game)}
     end
   end
 
@@ -278,7 +278,7 @@ class RemoteProcessClient
       write_int(-1)
     else
       write_int(moves.length)
-      moves.each { |move| write_move(move) }
+      moves.each {|move| write_move(move)}
     end
   end
 
@@ -318,7 +318,7 @@ class RemoteProcessClient
     return @previous_players if player_count < 0
 
     players = []
-    player_count.times { |_| players.push(read_player) }
+    player_count.times {|_| players.push(read_player)}
     @previous_players = players
   end
 
@@ -327,7 +327,7 @@ class RemoteProcessClient
       write_int(-1)
     else
       write_int(players.length)
-      players.each { |player| write_player(player) }
+      players.each {|player| write_player(player)}
     end
   end
 
@@ -353,7 +353,7 @@ class RemoteProcessClient
     return nil if player_context_count < 0
 
     player_contexts = []
-    player_context_count.times { |_| player_contexts.push(read_player_context) }
+    player_context_count.times {|_| player_contexts.push(read_player_context)}
     player_contexts
   end
 
@@ -362,7 +362,7 @@ class RemoteProcessClient
       write_int(-1)
     else
       write_int(player_contexts.length)
-      player_contexts.each { |player_context| write_player_context(player_context) }
+      player_contexts.each {|player_context| write_player_context(player_context)}
     end
   end
 
@@ -415,7 +415,7 @@ class RemoteProcessClient
     return nil if vehicle_count < 0
 
     vehicles = []
-    vehicle_count.times { |_| vehicles.push(read_vehicle) }
+    vehicle_count.times {|_| vehicles.push(read_vehicle)}
     vehicles
   end
 
@@ -424,7 +424,7 @@ class RemoteProcessClient
       write_int(-1)
     else
       write_int(vehicles.length)
-      vehicles.each { |vehicle| write_vehicle(vehicle) }
+      vehicles.each {|vehicle| write_vehicle(vehicle)}
     end
   end
 
@@ -458,7 +458,7 @@ class RemoteProcessClient
     return nil if vehicle_update_count < 0
 
     vehicle_updates = []
-    vehicle_update_count.times { |_| vehicle_updates.push(read_vehicle_update) }
+    vehicle_update_count.times {|_| vehicle_updates.push(read_vehicle_update)}
     vehicle_updates
   end
 
@@ -467,7 +467,7 @@ class RemoteProcessClient
       write_int(-1)
     else
       write_int(vehicle_updates.length)
-      vehicle_updates.each { |vehicle_update| write_vehicle_update(vehicle_update) }
+      vehicle_updates.each {|vehicle_update| write_vehicle_update(vehicle_update)}
     end
   end
 
@@ -504,7 +504,7 @@ class RemoteProcessClient
     return nil if world_count < 0
 
     worlds = []
-    world_count.times { |_| worlds.push(read_world) }
+    world_count.times {|_| worlds.push(read_world)}
     worlds
   end
 
@@ -513,7 +513,7 @@ class RemoteProcessClient
       write_int(-1)
     else
       write_int(worlds.length)
-      worlds.each { |world| write_world(world) }
+      worlds.each {|world| write_world(world)}
     end
   end
 
@@ -562,7 +562,7 @@ class RemoteProcessClient
     return nil if count < 0
 
     enums = []
-    count.times { |_| enums.push(read_enum(enum_class)) }
+    count.times {|_| enums.push(read_enum(enum_class))}
     enums
   end
 
@@ -571,7 +571,7 @@ class RemoteProcessClient
     return nil if count < 0
 
     enums_2d = []
-    count.times { |_| enums_2d.push(read_enums(enum_class)) }
+    count.times {|_| enums_2d.push(read_enums(enum_class))}
     enums_2d
   end
 
@@ -584,7 +584,7 @@ class RemoteProcessClient
       write_int(-1)
     else
       write_int(enums.length)
-      enums.each { |enum| write_enum(enum) }
+      enums.each {|enum| write_enum(enum)}
     end
   end
 
@@ -593,7 +593,7 @@ class RemoteProcessClient
       write_enum(-1)
     else
       write_enum(enums_2d.length)
-      enums_2d.each { |enums| write_enum(enums) }
+      enums_2d.each {|enums| write_enum(enums)}
     end
   end
 
@@ -644,7 +644,7 @@ class RemoteProcessClient
     return nil if count < 0
 
     ints_2d = []
-    count.times { |_| ints_2d.push(read_ints) }
+    count.times {|_| ints_2d.push(read_ints)}
     ints_2d
   end
 
@@ -657,7 +657,7 @@ class RemoteProcessClient
       write_int(-1)
     else
       write_int(ints.length)
-      ints.each { |int| write_int(int) }
+      ints.each {|int| write_int(int)}
     end
   end
 
@@ -666,7 +666,7 @@ class RemoteProcessClient
       write_int(-1)
     else
       write_int(ints_2d.length)
-      ints_2d.each { |ints| write_int(ints) }
+      ints_2d.each {|ints| write_int(ints)}
     end
   end
 
